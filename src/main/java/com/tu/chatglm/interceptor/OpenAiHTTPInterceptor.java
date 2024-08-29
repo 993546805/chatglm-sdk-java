@@ -1,5 +1,6 @@
 package com.tu.chatglm.interceptor;
 
+import com.tu.chatglm.common.Constants;
 import com.tu.chatglm.session.Configuration;
 import com.tu.chatglm.utils.BearerTokenUtils;
 import okhttp3.Headers;
@@ -26,9 +27,16 @@ public class OpenAiHTTPInterceptor implements Interceptor {
     @NotNull
     public  Response intercept(@NotNull Chain chain) throws IOException {
         Request original = chain.request();
+
+        String apiKeyByUser = original.header("apiKey");
+        if (apiKeyByUser == null) {
+            apiKeyByUser = Constants.NULL;
+        }
+        String apiKey = Constants.NULL.equals(apiKeyByUser) ? configuration.getApiKey() : apiKeyByUser;
+
         Request request = original.newBuilder()
                 .url(original.url())
-                .header("Authorization", "Bearer " + BearerTokenUtils.getToken(configuration.getApiKey(), configuration.getApiSecret()))
+                .header("Authorization", "Bearer " + BearerTokenUtils.getToken(apiKey, configuration.getApiSecret()))
                 .header("Content-Type", Configuration.JSON_CONTENT_TYPE)
                 .header("User-Agent", Configuration.DEFAULT_USER_AGENT)
                 .method(original.method(), original.body())

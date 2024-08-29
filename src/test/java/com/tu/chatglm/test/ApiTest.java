@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
@@ -91,6 +92,8 @@ public class ApiTest {
                 countDownLatch.countDown();
             }
         });
+
+        countDownLatch.await();
     }
 
 
@@ -102,7 +105,7 @@ public class ApiTest {
     public void test_completions_future() throws Exception {
         // 入参；模型、请求信息
         ChatCompletionRequest request = new ChatCompletionRequest();
-        request.setModel(Model.CHATGLM_TURBO); // chatGLM_6b_SSE、chatglm_lite、chatglm_lite_32k、chatglm_std、chatglm_pro
+        request.setModel(Model.GLM_4_FLASH); // chatGLM_6b_SSE、chatglm_lite、chatglm_lite_32k、chatglm_std、chatglm_pro
         request.setPrompt(new ArrayList<ChatCompletionRequest.Prompt>() {
             private static final long serialVersionUID = -7988151926241837899L;
 
@@ -122,6 +125,23 @@ public class ApiTest {
 
 
 
+
+    /**
+     * 用于测试:同步
+     */
+    @Test
+    public void test_completions_sync() throws Exception {
+        ChatCompletionRequest request = ChatCompletionRequest.builder()
+                .model(Model.GLM_4_FLASH)
+                .messages(Collections.singletonList(ChatCompletionRequest.Prompt.builder()
+                        .role(Role.user.getCode())
+                        .content("1+1=")
+                        .build()))
+                .build();
+
+        ChatCompletionSyncResponse chatCompletionSyncResponse = openAiSession.completionsSync(request);
+        log.info("测试结果：{}", JSON.toJSONString(chatCompletionSyncResponse));
+    }
 
 
 

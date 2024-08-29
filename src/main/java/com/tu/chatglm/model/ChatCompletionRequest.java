@@ -255,7 +255,7 @@ public class ChatCompletionRequest {
     public String toString() {
         try {
             // 24年1月发布新模型后调整
-            if (Model.GLM_3_5_TURBO.equals(this.model) || Model.GLM_4.equals(this.model) || Model.GLM_4V.equals(this.model)) {
+            if (Model.GLM_3_5_TURBO.equals(this.model) || Model.GLM_4.equals(this.model) || Model.GLM_4V.equals(this.model) || Model.GLM_4_AIR.equals(this.model) || Model.GLM_4_FLASH.equals(this.model)) {
                 Map<String, Object> paramsMap = new HashMap<>();
                 paramsMap.put("model", this.model.getCode());
                 if (null == this.messages && null == this.prompt) {

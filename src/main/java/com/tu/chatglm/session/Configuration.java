@@ -99,6 +99,7 @@ public class Configuration {
         this.executorGroup.put(Model.GLM_3_5_TURBO, glmExecutor);
         this.executorGroup.put(Model.GLM_4, glmExecutor);
         this.executorGroup.put(Model.GLM_4V, glmExecutor);
+        this.executorGroup.put(Model.GLM_4_FLASH, glmExecutor);
         this.executorGroup.put(Model.COGVIEW_3, glmExecutor);
         return this.executorGroup;
     }
